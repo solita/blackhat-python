@@ -194,6 +194,8 @@ Bonus ideas:
 There is some code that might be useful as a starting point: (src/LFI-template.py)
 The program actually downloads and writes the remote files to the current directory so careful here.
 
+P.S. If you don't think LFI is dangerous, consider these: (https://www.rcesecurity.com/2017/08/from-lfi-to-rce-via-php-sessions/)
+
 
 # Task 4
 
