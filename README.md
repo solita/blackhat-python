@@ -148,6 +148,8 @@ looking into it with a disassembler/debugger, but there are other nearly-as-triv
 
 Create a Python program that can read the binary file and tries to locate and decrypt potential "secrets" out of it.
 
+There is an example of a binary file for test material: (./a.out)
+
 Something along these pseudocode lines perhaps:
   * slide an index over the file (say, i)
   * for byte sequence f[i]...f[i+n] check if it looks like a string (alphanumeric characters). At least n characters long. (this is what the standard strings does)
