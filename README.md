@@ -201,11 +201,39 @@ P.S. If you don't think LFI is dangerous, consider these: (https://www.rcesecuri
 
 Remote exploit pwn.
 
-(This is currently on the works, sorry.. )
+There seems to be a chat server running and all you need is some TCP traffic to chat:
 
+```
+nc -v 34.243.97.41 8510
+found 0 associations
+found 1 connections:
+     1:	flags=82<CONNECTED,PREFERRED>
+     outif en10
+     src 10.25.164.4 port 55900
+     dst 34.243.97.41 port 8510
+     rank info not available
+     TCP aux info available
 
+Connection to 34.243.97.41 port 8510 [tcp/*] succeeded!
+     ___  ___ _____      _         _   
+    | _ \/ _ \_   _|  __| |_  __ _| |_ 
+    |   / (_) || |   / _| ' \/ _` |  _|
+    |_|_\\___/ |_|   \__|_||_\__,_|\__|
+<system> 2.0.218.106 connected
+/nick putsi
+hola amigos
+<putsi> hola amigos
+<lokori> hola putsi!
+```
 
+Fortunately (or unfortunately, depending on your point of view), this server has some serious bugs in it. It should be possible to exploit it, perhaps even get RCE out of it.
 
+The task:
+* Create a Python program that can act as a client to the chat server. There is some code already available: (src/pwn-backend/tcp-client.py)
+* Try to crash the server by sending it some payload (classic is 'A' repeated n times).
+* Try to make your client automatically reconnect if the server happens to crash.
 
+If you are interested, the compiled binary for the chat server is available: (pwn-backend/vulnserver.out)
 
- 
+This is a Python workshop so it doesn't really matter if you can succesfully exploit the flaws and execute some shellcode, but the idea is to get a grasp how this might be done over a remote connection.
+
