@@ -101,6 +101,19 @@ a ```set``` is also useful and works like you would expect from a set. With sets
 * [SecLists](https://github.com/danielmiessler/SecLists) contains very useful lists for usernames, parameters and other things. Use them as input for your scripts.
 
 
+# The tasks
+
+You don't have to complete every task. Not realistic in two hour workshop.
+You can choose whatever task you like the most. They are in no particular order.
+
+* Task 1, RCE -> forward shell
+* Task 2, LFI
+* Task 3, "better strings"
+* Task 4, Remote server pwn
+
+
+
+
 
 # Task 1, RCE -> forward shell
 
@@ -148,7 +161,7 @@ looking into it with a disassembler/debugger, but there are other nearly-as-triv
 
 Create a Python program that can read the binary file and tries to locate and decrypt potential "secrets" out of it.
 
-There is an example of a binary file for test material: (./a.out)
+There is an example of a binary file for test material: (./secret.bin)
 
 Something along these pseudocode lines perhaps:
   * slide an index over the file (say, i)
@@ -233,7 +246,11 @@ The task:
 * Try to crash the server by sending it some payload (classic is 'A' repeated n times).
 * Try to make your client automatically reconnect if the server happens to crash.
 
-If you are interested, the compiled binary for the chat server is available: (pwn-backend/vulnserver.out)
+Bonus:
+* This sort of thing benefits from actual fuzzing. Try to integrate Radamsa to this. 
+
+
+If you are interested, the compiled binary for the chat server is available: (pwn-backend/serverperver) . It may be useful for developing the exploit locally before trying it out on the remote server.
 
 This is a Python workshop so it doesn't really matter if you can succesfully exploit the flaws and execute some shellcode, but the idea is to get a grasp how this might be done over a remote connection.
 
