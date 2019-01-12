@@ -101,7 +101,7 @@ a ```set``` is also useful and works like you would expect from a set. With sets
 * [scapy](https://scapy.net/) is the Swiss army knife for all network hacking stuff in Python. Not necessary for trivial tasks.
 * For fuzzing, [Radamsa](https://github.com/aoh/radamsa) is nice. See [Swissfuzz](https://github.com/ouspg/swissfuzz) and [Heartbreaker](https://github.com/lokori/heartbreaker) for Python interfacing.
 * [SecLists](https://github.com/danielmiessler/SecLists) contains very useful lists for usernames, parameters and other things. Use them as input for your scripts.
-
+* [rlwrap](https://linux.die.net/man/1/rlwrap) is a nice utility that really enchances your forward shell experience.
 
 # The tasks
 
@@ -152,6 +152,12 @@ We get back something like this:
 <tr><td></td></tr><br>
 </table>  </p>    
 ```
+
+NOTE: 
+
+Use [rlwrap](https://linux.die.net/man/1/rlwrap) to get command history and arrow keys working properly in your "shell". Installed on Mac and Linux by default.
+Something like this:
+```rlwrap python rce-shell.py http://34.243.97.41/haveibeenpwned.php 1.1.1.1```
 
 
 # Task 2
