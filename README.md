@@ -123,7 +123,7 @@ We have found a web server in our penetration test that seems to be vulnerable a
 
 * ```pip install requests```
 * Take the [template code](src/RCE-template.py) 
-* Modify it to make a "shell" where you can interact with the remote server like you would have actual terminal connection to the server
+* Modify it to make a "shell" where you can interact with the remote server like you would have actual terminal connection to the server.
 * Tidy up the HTML from the output to make it more user-friendly. Either use ```split``` and other string manipulation stuff or use [HTMLParser](https://docs.python.org/2/library/htmlparser.html)
 
 ## RCE Proof-of-Concept
