@@ -1,6 +1,6 @@
 This contains material for Black Hat Python workshop at Disobey 2019.
 
-See the introduction to the workshop: (da_presis.pdf)
+See the [introduction to the workshop](/da_presis.pdf)
 
 The idea is to learn quickly prototyping scripts and tools for hacking. Obviously it's possible to do many things with the existing tools like sqlmap, Hydra, wfuzz etc. but sooner or later there is something that requires some custom programming or a custom tool. Due to time and other constraints these assignments and the content is quite basic, nothing fancy pro level stuff here. My blog post [Black Hat Programming](https://dev.solita.fi/2018/05/02/Black-Hat-Programming.html) explains the basic philosophy.
 
