@@ -97,6 +97,7 @@ a ```set``` is also useful and works like you would expect from a set. With sets
 
 * The official Python site has the language reference and API reference for the core: (https://docs.python.org/2/contents.html)
 * Standard functions of Python: (https://docs.python.org/2/library/functions.html)
+* Python cheatsheet: (https://gto76.github.io/python-cheatsheet/)
 * [requests](http://docs.python-requests.org/en/master/) is a nice HTTP library.
 * [scapy](https://scapy.net/) is the Swiss army knife for all network hacking stuff in Python. Not necessary for trivial tasks.
 * For fuzzing, [Radamsa](https://github.com/aoh/radamsa) is nice. See [Swissfuzz](https://github.com/ouspg/swissfuzz) and [Heartbreaker](https://github.com/lokori/heartbreaker) for Python interfacing.
