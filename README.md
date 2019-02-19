@@ -103,6 +103,7 @@ a ```set``` is also useful and works like you would expect from a set. With sets
 * For fuzzing, [Radamsa](https://github.com/aoh/radamsa) is nice. See [Swissfuzz](https://github.com/ouspg/swissfuzz) and [Heartbreaker](https://github.com/lokori/heartbreaker) for Python interfacing.
 * [SecLists](https://github.com/danielmiessler/SecLists) contains very useful lists for usernames, parameters and other things. Use them as input for your scripts.
 * [rlwrap](https://linux.die.net/man/1/rlwrap) is a nice utility that really enchances your forward shell experience.
+* [pwntools](http://docs.pwntools.com/en/stable/index.html) can be handy if you want to manipulate and play with binary executables.
 
 # The tasks
 
